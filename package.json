@@ -9,7 +9,7 @@
 			"import": "./dist/excalidraw-wc.es.js",
 			"require": "./dist/excalidraw-wc.umd.js"
 		},
-		"./style.css": "./dist/style.css"
+		"./style.css": "./dist/excalidraw-wc.css"
 	},
 	"files": [
 		"dist"

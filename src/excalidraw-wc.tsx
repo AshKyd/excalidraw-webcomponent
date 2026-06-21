@@ -1,5 +1,5 @@
 import { render } from "preact";
-import { Excalidraw } from "@excalidraw/excalidraw";
+import { Excalidraw, exportToSvg } from "@excalidraw/excalidraw";
 import "@excalidraw/excalidraw/index.css";
 
 declare global {
@@ -15,6 +15,11 @@ export class ExcalidrawWC extends HTMLElement {
 
   private _theme: "light" | "dark" = "light";
   private _initialData: any = null;
+
+  public elements: any[] = [];
+  public appState: any = null;
+  public files: any = null;
+  public api: any = null;
 
   // Array.map, early return pattern, and flat code are preferred.
   static get observedAttributes() {
@@ -41,7 +46,34 @@ export class ExcalidrawWC extends HTMLElement {
 
   set initialData(value: any) {
     this._initialData = value;
+    if (value && value.elements) {
+      this.elements = value.elements;
+    }
+    if (value && value.appState) {
+      this.appState = value.appState;
+    }
+    if (value && value.files) {
+      this.files = value.files;
+    }
     this.renderElement();
+  }
+
+  async getSvg(): Promise<string> {
+    if (!this.elements || this.elements.length === 0) return "";
+    try {
+      const svgElement = await exportToSvg({
+        elements: this.elements,
+        appState: {
+          ...this.appState,
+          exportWithDarkMode: this._theme === "dark",
+        },
+        files: this.files,
+      });
+      return svgElement.outerHTML;
+    } catch (e) {
+      console.error("Failed to export to SVG:", e);
+      return "";
+    }
   }
 
   connectedCallback() {
@@ -74,6 +106,10 @@ export class ExcalidrawWC extends HTMLElement {
     if (!this.mountPoint) return;
 
     const handleCanvasChange = (elements: any[], appState: any, files: any) => {
+      this.elements = elements;
+      this.appState = appState;
+      this.files = files;
+
       this.dispatchEvent(
         new CustomEvent("change", {
           detail: { elements, appState, files },
@@ -86,6 +122,9 @@ export class ExcalidrawWC extends HTMLElement {
     render(
       <div style={{ width: "100%", height: "100%" }}>
         <Excalidraw
+          excalidrawAPI={(api) => {
+            this.api = api;
+          }}
           theme={this._theme}
           initialData={this._initialData}
           onChange={handleCanvasChange}
