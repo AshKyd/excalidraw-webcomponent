@@ -85,6 +85,23 @@ npm install excalidraw-wc
 
 ---
 
+## Self-Hosting Assets
+
+Excalidraw loads external font assets at runtime. To self-host these assets:
+
+1. Copy the fonts directory from `@excalidraw/excalidraw` to your public/served assets directory:
+   ```bash
+   cp -R node_modules/@excalidraw/excalidraw/dist/prod/fonts public/
+   ```
+2. Set `window.EXCALIDRAW_ASSET_PATH` to the path where the fonts are served (e.g., `/` if copied directly into `public/`) before the component initialized:
+   ```html
+   <script>
+     window.EXCALIDRAW_ASSET_PATH = "/";
+   </script>
+   ```
+
+---
+
 ## API Reference
 
 ### Attributes / Properties
@@ -92,6 +109,8 @@ npm install excalidraw-wc
 | Attribute | Property | Type | Default | Description |
 | :--- | :--- | :--- | :--- | :--- |
 | `theme` | `theme` | `'light' \| 'dark'` | `'light'` | Sets the dark/light mode of the editor. Can be updated dynamically. |
+| `enabled-tools` | `enabledTools` | `string` | `null` | Comma/space-separated list of enabled drawing tools. Non-listed tools will be hidden. If omitted, all tools are enabled. |
+| `app-state` | `customAppState` | `Object \| string` | `{}` | Native Excalidraw `AppState` configurations to merge and apply. |
 | - | `initialData` | `Object` | `null` | Pre-populates the drawing area. Structure matches `{ elements, appState, files }`. |
 
 ### Methods
