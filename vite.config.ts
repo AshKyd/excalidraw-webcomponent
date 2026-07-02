@@ -1,9 +1,16 @@
 import { defineConfig } from 'vite';
 import preact from '@preact/preset-vite';
+import dts from 'vite-plugin-dts';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [preact()],
+	plugins: [
+		preact(),
+		dts({
+			insertTypesEntry: true,
+			include: ['src/excalidraw-wc.tsx'],
+		}),
+	],
 	build: {
 		lib: {
 			entry: 'src/excalidraw-wc.tsx',
@@ -22,3 +29,4 @@ export default defineConfig({
 		chunkSizeWarningLimit: 2000,
 	},
 });
+

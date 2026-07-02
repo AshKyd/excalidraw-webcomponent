@@ -1,31 +1,35 @@
 {
-	"name": "excalidraw-wc",
-	"version": "1.0.0",
-	"type": "module",
-	"main": "./dist/excalidraw-wc.umd.js",
-	"module": "./dist/excalidraw-wc.es.js",
-	"exports": {
-		".": {
-			"import": "./dist/excalidraw-wc.es.js",
-			"require": "./dist/excalidraw-wc.umd.js"
-		},
-		"./style.css": "./dist/excalidraw-wc.css"
-	},
-	"files": [
-		"dist"
-	],
-	"scripts": {
-		"dev": "vite",
-		"build": "vite build",
-		"preview": "vite preview"
-	},
-	"dependencies": {
-		"@excalidraw/excalidraw": "^0.18.1",
-		"preact": "^10.26.9"
-	},
-	"devDependencies": {
-		"@preact/preset-vite": "^2.10.2",
-		"typescript": "^6.0.3",
-		"vite": "^7.0.4"
-	}
+  "name": "excalidraw-wc",
+  "version": "1.0.0",
+  "description": "Excalidraw packaged as a standard Web Component",
+  "type": "module",
+  "main": "./dist/excalidraw-wc.umd.js",
+  "module": "./dist/excalidraw-wc.es.js",
+  "types": "./dist/excalidraw-wc.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/excalidraw-wc.d.ts",
+      "import": "./dist/excalidraw-wc.es.js",
+      "require": "./dist/excalidraw-wc.umd.js"
+    },
+    "./style.css": "./dist/excalidraw-wc.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@excalidraw/excalidraw": "^0.18.1",
+    "preact": "^10.26.9"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.10.2",
+    "typescript": "^6.0.3",
+    "vite": "^7.0.4",
+    "vite-plugin-dts": "^4.5.0"
+  }
 }
