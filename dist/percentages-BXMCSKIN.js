@@ -22098,10 +22098,12 @@ const r8 = [
 };
 class ZK extends HTMLElement {
   constructor() {
-    super(), this.mountPoint = null, this._theme = "light", this._initialData = null, this._enabledTools = null, this._appState = {}, this.elements = [], this.appState = null, this.files = null, this.api = null;
+    super(), this.mountPoint = null, this._theme = "light", this._initialData = null, this._enabledTools = null, this._appState = {}, this._disableContextMenu = !1, this.elements = [], this.appState = null, this.files = null, this.api = null, this.handleContextMenu = (t) => {
+      this._disableContextMenu && (t.preventDefault(), t.stopPropagation());
+    };
   }
   static get observedAttributes() {
-    return ["theme", "enabled-tools", "app-state"];
+    return ["theme", "enabled-tools", "app-state", "disable-context-menu"];
   }
   get theme() {
     return this._theme;
@@ -22135,6 +22137,13 @@ class ZK extends HTMLElement {
       this._appState = t || {};
     this.renderElement();
   }
+  get disableContextMenu() {
+    return this._disableContextMenu;
+  }
+  set disableContextMenu(t) {
+    const n = !!t;
+    this._disableContextMenu !== n && (this._disableContextMenu = n, this.renderElement());
+  }
   async getSvg() {
     if (!this.elements || this.elements.length === 0) return "";
     try {
@@ -22151,7 +22160,7 @@ class ZK extends HTMLElement {
     }
   }
   connectedCallback() {
-    this.mountPoint = document.createElement("div"), this.mountPoint.style.width = "100%", this.mountPoint.style.height = "100%", this.appendChild(this.mountPoint), this.renderElement();
+    this.mountPoint = document.createElement("div"), this.mountPoint.style.width = "100%", this.mountPoint.style.height = "100%", this.appendChild(this.mountPoint), this.addEventListener("contextmenu", this.handleContextMenu, !0), this.renderElement();
   }
   attributeChangedCallback(t, n, a) {
     if (n !== a) {
@@ -22165,11 +22174,12 @@ class ZK extends HTMLElement {
         } catch (i) {
           console.error("Failed to parse app-state JSON:", i), this._appState = {};
         }
+      else t === "disable-context-menu" && (this._disableContextMenu = a !== null && a !== "false");
       this.renderElement();
     }
   }
   disconnectedCallback() {
-    this.mountPoint && ll(null, this.mountPoint);
+    this.removeEventListener("contextmenu", this.handleContextMenu, !0), this.mountPoint && ll(null, this.mountPoint);
   }
   renderElement() {
     if (!this.mountPoint) return;

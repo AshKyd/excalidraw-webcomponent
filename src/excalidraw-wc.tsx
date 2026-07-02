@@ -49,6 +49,7 @@ export class ExcalidrawWC extends HTMLElement {
   private _initialData: any = null;
   private _enabledTools: string | null = null;
   private _appState: any = {};
+  private _disableContextMenu: boolean = false;
 
   public elements: any[] = [];
   public appState: any = null;
@@ -56,7 +57,7 @@ export class ExcalidrawWC extends HTMLElement {
   public api: any = null;
 
   static get observedAttributes() {
-    return ["theme", "enabled-tools", "app-state"];
+    return ["theme", "enabled-tools", "app-state", "disable-context-menu"];
   }
 
   constructor() {
@@ -119,6 +120,17 @@ export class ExcalidrawWC extends HTMLElement {
     this.renderElement();
   }
 
+  get disableContextMenu(): boolean {
+    return this._disableContextMenu;
+  }
+
+  set disableContextMenu(value: boolean) {
+    const bool = !!value;
+    if (this._disableContextMenu === bool) return;
+    this._disableContextMenu = bool;
+    this.renderElement();
+  }
+
   async getSvg(): Promise<string> {
     if (!this.elements || this.elements.length === 0) return "";
     try {
@@ -137,6 +149,13 @@ export class ExcalidrawWC extends HTMLElement {
     }
   }
 
+  private handleContextMenu = (e: MouseEvent) => {
+    if (this._disableContextMenu) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+
   connectedCallback() {
     // Set up container element for mounting Excalidraw.
     this.mountPoint = document.createElement("div");
@@ -144,6 +163,7 @@ export class ExcalidrawWC extends HTMLElement {
     this.mountPoint.style.height = "100%";
 
     this.appendChild(this.mountPoint);
+    this.addEventListener("contextmenu", this.handleContextMenu, true);
 
     this.renderElement();
   }
@@ -162,11 +182,14 @@ export class ExcalidrawWC extends HTMLElement {
         console.error("Failed to parse app-state JSON:", e);
         this._appState = {};
       }
+    } else if (name === "disable-context-menu") {
+      this._disableContextMenu = newValue !== null && newValue !== "false";
     }
     this.renderElement();
   }
 
   disconnectedCallback() {
+    this.removeEventListener("contextmenu", this.handleContextMenu, true);
     if (this.mountPoint) {
       render(null, this.mountPoint);
     }

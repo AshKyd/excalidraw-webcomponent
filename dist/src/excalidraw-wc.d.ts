@@ -11,6 +11,7 @@ export declare class ExcalidrawWC extends HTMLElement {
     private _initialData;
     private _enabledTools;
     private _appState;
+    private _disableContextMenu;
     elements: any[];
     appState: any;
     files: any;
@@ -25,7 +26,10 @@ export declare class ExcalidrawWC extends HTMLElement {
     set enabledTools(value: string | null);
     get customAppState(): any;
     set customAppState(value: any);
+    get disableContextMenu(): boolean;
+    set disableContextMenu(value: boolean);
     getSvg(): Promise<string>;
+    private handleContextMenu;
     connectedCallback(): void;
     attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     disconnectedCallback(): void;
