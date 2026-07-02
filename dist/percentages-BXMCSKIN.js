@@ -22189,11 +22189,6 @@ class ZK extends HTMLElement {
         const r = YK[i];
         r && a.push(`${r} { display: none !important; }`);
       }
-    }), console.log("[excalidraw-wc] Render configuration:", {
-      enabledToolsAttr: this._enabledTools,
-      enabledSet: Array.from(n),
-      styles: a.join(`
-`)
     }), ll(
       /* @__PURE__ */ h("div", { style: { width: "100%", height: "100%" }, children: [
         a.length > 0 && /* @__PURE__ */ h("style", { dangerouslySetInnerHTML: { __html: a.join(`
@@ -22205,7 +22200,15 @@ class ZK extends HTMLElement {
               this.api = i;
             },
             theme: this._theme,
-            initialData: this._initialData,
+            initialData: this._initialData ? {
+              ...this._initialData,
+              appState: {
+                ...this._appState,
+                ...this._initialData.appState || {}
+              }
+            } : {
+              appState: this._appState
+            },
             onChange: t,
             appState: {
               theme: this._theme,

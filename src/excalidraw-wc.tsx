@@ -207,12 +207,6 @@ export class ExcalidrawWC extends HTMLElement {
       }
     });
 
-    console.log("[excalidraw-wc] Render configuration:", {
-      enabledToolsAttr: this._enabledTools,
-      enabledSet: Array.from(enabledSet),
-      styles: styles.join("\n")
-    });
-
     render(
       <div style={{ width: "100%", height: "100%" }}>
         {styles.length > 0 && <style dangerouslySetInnerHTML={{ __html: styles.join("\n") }} />}
@@ -221,7 +215,15 @@ export class ExcalidrawWC extends HTMLElement {
             this.api = api;
           }}
           theme={this._theme}
-          initialData={this._initialData}
+          initialData={this._initialData ? {
+            ...this._initialData,
+            appState: {
+              ...this._appState,
+              ...(this._initialData.appState || {})
+            }
+          } : {
+            appState: this._appState
+          }}
           onChange={handleCanvasChange}
           appState={{
             theme: this._theme,
