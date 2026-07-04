@@ -116,7 +116,7 @@ Excalidraw loads external font assets at runtime. To self-host these assets:
 ### Methods
 
 #### `getSvg(): Promise<string>`
-Exports the current canvas drawing to an SVG string.
+Exports the current canvas drawing to an SVG string. The exported SVG will include a `supports-dark-mode` class.
 
 ### Events
 

@@ -142,6 +142,7 @@ export class ExcalidrawWC extends HTMLElement {
         },
         files: this.files,
       });
+      svgElement.classList.add("supports-dark-mode");
       return svgElement.outerHTML;
     } catch (e) {
       console.error("Failed to export to SVG:", e);
