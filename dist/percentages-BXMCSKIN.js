@@ -22147,14 +22147,15 @@ class ZK extends HTMLElement {
   async getSvg() {
     if (!this.elements || this.elements.length === 0) return "";
     try {
-      return (await CU({
+      const t = await CU({
         elements: this.elements,
         appState: {
           ...this.appState,
           exportWithDarkMode: this._theme === "dark"
         },
         files: this.files
-      })).outerHTML;
+      });
+      return t.classList.add("supports-dark-mode"), t.outerHTML;
     } catch (t) {
       return console.error("Failed to export to SVG:", t), "";
     }

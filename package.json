@@ -22,14 +22,13 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "dependencies": {
-    "@excalidraw/excalidraw": "^0.18.1",
-    "preact": "^10.26.9"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@preact/preset-vite": "^2.10.2",
     "typescript": "^6.0.3",
     "vite": "^7.0.4",
-    "vite-plugin-dts": "^4.5.0"
+    "vite-plugin-dts": "^4.5.0",
+    "@excalidraw/excalidraw": "^0.18.1",
+    "preact": "^10.26.9"
   }
 }
